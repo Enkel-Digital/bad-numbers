@@ -1,44 +1,13 @@
 <template>
   <div id="app">
-    <section class="hero is-fullheight">
-      <HeroHead />
-      <img :src="heroImage" alt="Hero" class="image hero-image" />
-      <HeroBody />
-    </section>
-
-    <!-- Next section after the hero banner -->
-
-    <section id="next" class="hero is-fullheight">
-      <img :src="heroImage2" alt="Hero" class="image hero-image" />
-
-      <!-- @todo Empty hero body to force footer to the bottom of the hero page -->
-      <div class="hero-body" />
-    </section>
-
-    <Footer />
+    <!-- Router view for the main view -->
+    <router-view />
   </div>
 </template>
 
 <script>
-import HeroHead from "@/components/HeroHead";
-import HeroBody from "@/components/HeroBody";
-import Footer from "@/components/Footer";
-
 export default {
   name: "App",
-  components: {
-    HeroHead,
-    HeroBody,
-    Footer,
-  },
-  data() {
-    return {
-      heroImage:
-        "https://images.unsplash.com/39/lIZrwvbeRuuzqOoWJUEn_Photoaday_CSD%20(1%20of%201)-5.jpg?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80",
-      heroImage2:
-        "https://images.unsplash.com/photo-1497465135434-9dc15238075a?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format",
-    };
-  },
 };
 </script>
 

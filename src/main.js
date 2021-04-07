@@ -14,18 +14,50 @@ import Vue from "vue";
 import App from "./App.vue";
 import "./registerServiceWorker";
 
-// @todo Does not use the router by default
-// import router from "./router";
+import firebase from "firebase/app";
+import "firebase/auth";
+
+import router from "./router";
+// import store from "./store";
 
 Vue.config.productionTip = false;
 
-new Vue({
-  // router,
-  render: (h) => h(App),
+// Register global custom directive called `v-autofocus`
+// import autofocus from "./directives/autofocus";
+// Vue.directive("autofocus", autofocus);
 
-  // UNCOMMENT THIS IF PRE-RENDERING PLUGIN IS USED
-  // This is needed for "prerender-spa-plugin"'s renderAfterDocumentEvent to take snapshot of static content once everything is rendered.
-  // mounted() {
-  //   document.dispatchEvent(new Event("vue-render-complete"));
-  // },
-}).$mount("#app");
+// firebaseConfig auto generated in project settings
+firebase.initializeApp({
+  apiKey: "AIzaSyA5UGZmRB4bMKeIShwBuU8-BU4d7gs1UrQ",
+  authDomain: "bad-numbers.firebaseapp.com",
+  projectId: "bad-numbers",
+  storageBucket: "bad-numbers.appspot.com",
+  messagingSenderId: "459076248094",
+  appId: "1:459076248094:web:e78530ca658978793f040f",
+});
+
+// Make firebase use browser's default language
+firebase.auth().useDeviceLanguage();
+
+// App variable to store reference to the vue App object
+let app;
+
+/**
+ * @notice Why new vue is wrapped in this.
+ * Wait for firebase to finish initialization before creating the app.
+ * So that the router navigation wont break due to invalid auth
+ */
+const unsubscribe = firebase.auth().onAuthStateChanged(() => {
+  // Prevent app initialization from running more than once
+  if (!app)
+    // Create new vue app
+    app = new Vue({
+      router,
+      // store,
+      render: (h) => h(App),
+    }).$mount("#app");
+
+  // Use the firebase.Unsubscribe function returned from adding auth state change listner to unsubscribe
+  // To prevent new Vue from running more than once
+  unsubscribe();
+});
