@@ -23,8 +23,8 @@ import router from "./router";
 Vue.config.productionTip = false;
 
 // Register global custom directive called `v-autofocus`
-// import autofocus from "./directives/autofocus";
-// Vue.directive("autofocus", autofocus);
+import autofocus from "./directives/autofocus";
+Vue.directive("autofocus", autofocus);
 
 // firebaseConfig auto generated in project settings
 firebase.initializeApp({
