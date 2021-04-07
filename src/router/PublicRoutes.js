@@ -17,12 +17,6 @@ const routes = [
     component: () => import("@/views/Login.vue"),
     meta: { Auth_requirements: AuthType.public_only },
   },
-  {
-    path: "/signup",
-    name: "signup",
-    component: () => import("@/views/Signup.vue"),
-    meta: { Auth_requirements: AuthType.public_only },
-  },
   // {
   //   path: "/about",
   //   name: "about",

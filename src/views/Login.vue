@@ -1,174 +1,90 @@
 <template>
-  <v-main id="login">
-    <v-img
-      alt="ClassExpress logo"
-      src="../assets/logo.png"
-      max-height="calc(100% - 1em)"
-      max-width="calc(100% - 1em)"
-    />
+  <div>
+    <h2>Login</h2>
 
-    <input
-      v-autofocus
-      type="text"
-      v-model="email"
-      placeholder="Email"
-      @keypress.enter="login"
-      required
-    />
-    <br />
-    <input
-      type="password"
-      v-model="password"
-      placeholder="Password"
-      @keypress.enter="login"
-      required
-    />
+    Include ur country code please
+    <input type="tel" v-model="phoneNumber" placeholder="Phone Number" />
+    <button id="sign-in-button" @click="sendOtp">Get OTP</button>
 
-    <v-btn @click="login" width="calc(100% - 6em)" color="blue darken-1" dark>
-      Login
-    </v-btn>
-
-    <br />
+    <div id="recaptcha-container"></div>
     <br />
 
-    <v-btn @click="back" width="calc(100% - 6em)" color="grey" dark>
-      back
-    </v-btn>
-
-    <br />
-    <br />
-
-    <div style="text-align: left; margin-left: 3em; opacity: 0.8">
-      Dont have an account?
-    </div>
-    <v-btn
-      :to="{ name: 'signup' }"
-      width="calc(100% - 6em)"
-      color="green darken-1"
-      dark
-    >
-      Signup now!
-    </v-btn>
-
-    <br />
-    <br />
-    <br />
-    <br />
-  </v-main>
+    <input type="number" v-model="otp" placeholder="OTP" />
+    <button @click="verifyOtp">Verify</button><br />
+    <button @click="sendOtp()">Resend OTP</button>
+  </div>
 </template>
 
 <script>
-/**
- * @Todo - Add in browser's "required" attribute checker for input.
- */
-
-import firebase from "firebase/app";
-import "firebase/auth";
-
-// Function to map and return a given err.code to a user friendly message
-function error_msg(err) {
-  switch (err.code) {
-    case "auth/wrong-password":
-      return "Invalid password or email!";
-    case "auth/network-request-failed":
-      return "Oops, check your internet connection!";
-    case "auth/user-not-found":
-      return "Sorry but you dont have an account with us 😭<br />Signup now!";
-    case "email/no-verify":
-      return "Email not verified.<br />Please verify before trying again";
-    default:
-      return "Something went wrong! Please try again.";
-  }
-}
+import firebase from "firebase";
 
 export default {
-  name: "login",
   data() {
     return {
-      email: "",
-      password: "",
+      confirmationResult: undefined,
+      phoneNumber: undefined,
+      otp: undefined,
     };
   },
   methods: {
-    back() {
-      this.$router.push({ name: "welcome" });
-    },
-    async login() {
-      // Show loading screen before login logic executes
-      const loaderRequestID = this.$loader.new();
-
-      /*
-        @todo Disable the login/signup up buttons or some code here to prevent this from being called more then once
-
-        To prevent:
-        - double call to login
-        - double navigation to the same route
-      */
+    async sendOtp() {
+      let phoneNumber = this.phoneNumber;
+      let recaptchaVerifier = window.recaptchaVerifier;
 
       try {
-        // eslint-disable-next-line no-unused-vars
-        const usr = await firebase
+        const confirmationResult = await firebase
           .auth()
-          .signInWithEmailAndPassword(this.email, this.password);
+          .signInWithPhoneNumber(phoneNumber, recaptchaVerifier);
 
-        if (!firebase.auth().currentUser.emailVerified) {
-          // Throw new error with pre-defined code to get the right error_msg
-          const error = new Error();
-          error.code = "email/no-verify";
-          throw error;
-        }
-
-        // Await for async dispatch to ensure app only starts after user info is available.
-        await this.$store.dispatch("getUserDetails", this.email);
-        this.$store.dispatch("init");
-
-        // Route to the user's home page, after login
-        this.$router.replace({ name: "home" });
+        // SMS sent. Prompt user to type the code from the message, then sign the
+        // user in with confirmationResult.confirm(code).
+        this.confirmationResult = confirmationResult;
+        alert("SMS sent");
       } catch (error) {
-        // Only resend verification email if needed, but both will end early after signout without continuing to normal error handling
-        if (error.code === "email/no-verify") {
-          if (
-            confirm(
-              "Please verify your email first! Resend verification email?"
-            )
-          )
-            firebase.auth().currentUser.sendEmailVerification();
-          return await firebase.auth().signOut();
-        }
-
-        // If there is an error but user is somehow logged in, sign user out to try again
-        if (firebase.auth().currentUser) await firebase.auth().signOut();
-
-        // Create new user error and show with ErrorDialog
-        const userError = this.$error.createError(
-          this.$error.ERROR.level.RETRY,
-          // @todo Update this to use the AUTH error type, perhaps combine with error.new? Why create this var?
-          this.$error.ERROR.custom("Authentication Failed", error_msg(error))
-        );
-        this.$error.new(userError);
-      } finally {
-        // Remove loader after login logic completes regardless of whether login failed or succeeded
-        // Inside finally to ensure execution even if catch block was ran
-        this.$loader.clear(loaderRequestID);
+        // Error; SMS not sent
+        // ...
+        alert("Error ! SMS not sent");
       }
     },
+
+    async verifyOtp() {
+      try {
+        if (this.otp.length != 6) return alert("Invalid OTP!");
+
+        let vm = this;
+        let otp = this.otp;
+
+        const result = await this.confirmationResult.confirm(otp);
+
+        // Store this into vuex
+        console.log("isNewUser: ", result.additionalUserInfo.isNewUser);
+
+        //route to set password !
+        vm.$router.push({ name: "home" });
+      } catch (error) {
+        // User couldn't sign in (bad verification code?)
+        console.log(error.message); // Show this on Screen
+      }
+    },
+
+    initReCaptcha() {
+      // let vm = this;
+      window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
+        "recaptcha-container",
+        {
+          size: "invisible",
+          callback: function (response) {
+            // reCAPTCHA solved, allow signInWithPhoneNumber.
+          },
+          "expired-callback": function () {
+            // Response expired. Ask user to solve reCAPTCHA again.
+          },
+        }
+      );
+    },
+  },
+  mounted() {
+    this.initReCaptcha();
   },
 };
 </script>
-
-<style scoped>
-input {
-  margin: 0.4em 0;
-  padding: 1em;
-
-  width: calc(100% - 6em);
-
-  border: 1px solid turquoise;
-  border-radius: 0.4em;
-}
-
-.error {
-  margin-top: 1em;
-  margin-bottom: 1em;
-}
-</style>

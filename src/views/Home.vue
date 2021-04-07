@@ -1,29 +1,49 @@
 <template>
-  <v-main>
-    <NewsBanners />
-    <v-divider />
-
-    <Recommended />
+  <div>
+    HOME
     <br />
-    <Popular />
-    <br />
-
-    <!-- @todo Update this copywriting -->
-    <p>Invite your friends to start learning new skills together!</p>
-  </v-main>
+    <button @click="logout">logout</button>
+  </div>
 </template>
 
 <script>
-import NewsBanners from "@/components/NewsBanners.vue";
-import Recommended from "@/components/Recommended.vue";
-import Popular from "@/components/Popular.vue";
+import firebase from "firebase/app";
+import "firebase/auth";
+// import store from "../store/index";
 
 export default {
   name: "home",
-  components: {
-    NewsBanners,
-    Recommended,
-    Popular,
+
+  methods: {
+    // import initialState from "../store/initialState";
+
+    /**
+     * Signout current user, clear vuex store state and redirect to login view.
+     * @function logout
+     */
+    async logout() {
+      if (!confirm("Logout?")) return;
+
+      // Signout current user
+      await firebase.auth().signOut();
+
+      // console.log("logout is called");
+      // console.log("state before replace: ", store.state);
+
+      // Clear vuex state by replacing the entire state with the initial state
+      // store.replaceState(initialState());
+
+      // Have to somehow clear the state of all the modules too.
+
+      // console.log("state after replace: ", store.state);
+
+      // Clear storage mediums used for data storage by "vuex-persistedstate" plugin
+      localStorage.clear();
+      sessionStorage.clear();
+
+      // Redirect to login view
+      this.$router.push({ name: "login" });
+    },
   },
 };
 </script>
