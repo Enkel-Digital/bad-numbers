@@ -21,3 +21,14 @@ GET {{host}}/
 
 ### Health probe
 GET {{host}}/health
+
+
+### Report a phone number
+POST {{host}}/report
+{{authHeader}}
+content-type: application/json
+
+{
+    "number": "+6584138820",
+    "reasonID": "0"
+}
