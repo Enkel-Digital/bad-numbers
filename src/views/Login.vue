@@ -3,7 +3,12 @@
     <h2>Login</h2>
 
     Include ur country code please
-    <input type="tel" v-model="phoneNumber" placeholder="Phone Number" />
+    <input
+      type="tel"
+      pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
+      v-model="phoneNumber"
+      placeholder="Phone Number"
+    />
     <button id="sign-in-button" @click="sendOtp">Get OTP</button>
 
     <div id="recaptcha-container"></div>
@@ -11,7 +16,7 @@
 
     <input type="number" v-model="otp" placeholder="OTP" />
     <button @click="verifyOtp">Verify</button><br />
-    <button @click="sendOtp()">Resend OTP</button>
+    <button @click="sendOtp">Resend OTP</button>
   </div>
 </template>
 
@@ -27,6 +32,7 @@ export default {
       otp: undefined,
     };
   },
+
   methods: {
     async sendOtp() {
       let phoneNumber = this.phoneNumber;

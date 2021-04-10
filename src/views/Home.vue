@@ -2,15 +2,21 @@
   <div class="section">
     <div id="welcome" class="columns is-vcentered is-centered is-multiline">
       <div class="column">
-        <button :to="{ name: 'search' }" class="button is-light is-fullwidth">
+        <router-link
+          :to="{ name: 'search' }"
+          class="button is-light is-fullwidth"
+        >
           Search a number
-        </button>
+        </router-link>
       </div>
 
       <div class="column">
-        <button :to="{ name: 'report' }" class="button is-light is-fullwidth">
+        <router-link
+          :to="{ name: 'report' }"
+          class="button is-light is-fullwidth"
+        >
           Report a number
-        </button>
+        </router-link>
       </div>
 
       <div class="column">
