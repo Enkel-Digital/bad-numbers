@@ -24,3 +24,6 @@ pnpm-debug.log*
 
 # Ignore the firebase caching directory
 .firebase
+
+# Ignore firebase service account key
+serviceAccountKey.json
