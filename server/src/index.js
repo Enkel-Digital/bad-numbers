@@ -13,6 +13,7 @@ app.use(require("helmet")()); // middleware which adds http headers
  * @notice Import and Mount all the routers for the different routes
  */
 app.use("/", require("./routes/default"));
+app.use("/search", require("./routes/search"));
 app.use("/report", require("./routes/report"));
 // app.use("/error", require("./routes/error"));
 

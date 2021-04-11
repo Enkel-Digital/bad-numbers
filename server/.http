@@ -22,6 +22,10 @@ GET {{host}}/
 ### Health probe
 GET {{host}}/health
 
+### Search number
+# GET /search/:number
+GET {{host}}/search/+6584138820
+{{authHeader}}
 
 ### Report a phone number
 POST {{host}}/report

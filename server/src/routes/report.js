@@ -38,15 +38,15 @@ router.post(
     const doc = await docRef.get();
 
     // Check if this number has been reported before
-    // If doc no exists means first time being reported, so create the doc plus a counter value of 1
+    // If doc no exists means first time being reported, so create the doc plus a count value of 1
     if (!doc.exists)
       await docRef.set({
-        counter: 1,
+        count: 1,
         // reason: { [reasonID]: incrementInstruction },
       });
     else
       await docRef.update({
-        counter: incrementInstruction,
+        count: incrementInstruction,
         // reason: { [reasonID]: incrementInstruction },
       });
 
