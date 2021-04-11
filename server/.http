@@ -5,6 +5,19 @@
 @firebaseAuthApiKey = AIzaSyA5UGZmRB4bMKeIShwBuU8-BU4d7gs1UrQ
 @authHeader = Authorization: Bearer {{getAuth.response.body.idToken}}
 
+### Although users can only use phone auth from the frontend, email/password auth method is enabled for testing locally.
+### Create api_tester account if none
+# @name signUp
+POST https://identitytoolkit.googleapis.com/v1/accounts:signUp?key={{firebaseAuthApiKey}}
+content-type: application/json
+
+{
+    "email": "api_tester@enkeldigital.com",
+    "password": "securePassword",
+    "returnSecureToken": true,
+}
+
+
 ### Get auth credentials
 # @name getAuth
 POST https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={{firebaseAuthApiKey}}

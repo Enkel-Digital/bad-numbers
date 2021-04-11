@@ -9,12 +9,16 @@ const cors = require("cors");
 app.use(cors());
 app.use(require("helmet")()); // middleware which adds http headers
 
+const authMiddleware = require("firebase-auth-express-middleware")({
+  firebaseAdmin: require("firebase-admin"),
+});
+
 /**
  * @notice Import and Mount all the routers for the different routes
  */
 app.use("/", require("./routes/default"));
-app.use("/search", require("./routes/search"));
-app.use("/report", require("./routes/report"));
+app.use("/search", authMiddleware, require("./routes/search"));
+app.use("/report", authMiddleware, require("./routes/report"));
 // app.use("/error", require("./routes/error"));
 
 // Mount the 404 and 500 error handling middleware last

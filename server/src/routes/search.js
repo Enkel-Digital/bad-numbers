@@ -10,10 +10,6 @@ const router = express.Router();
 const fs = require("../utils/fs");
 const { asyncWrap } = require("express-error-middlewares");
 
-const authMiddleware = require("firebase-auth-express-middleware")({
-  firebaseAdmin: require("firebase-admin"),
-});
-
 /**
  * Search for a number if it is reported before and the reasons for it
  * @name GET /search/:number

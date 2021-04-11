@@ -11,12 +11,7 @@ const fs = require("../utils/fs");
 const FieldValue = require("firebase-admin").firestore.FieldValue;
 const incrementInstruction = FieldValue.increment(1);
 const deleteInstruction = FieldValue.delete();
-const unixseconds = require("unixseconds");
 const { asyncWrap } = require("express-error-middlewares");
-
-const authMiddleware = require("firebase-auth-express-middleware")({
-  firebaseAdmin: require("firebase-admin"),
-});
 
 /**
  * Report a number and a reason for reporting it
