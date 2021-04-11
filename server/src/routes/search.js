@@ -8,9 +8,6 @@
 const express = require("express");
 const router = express.Router();
 const fs = require("../utils/fs");
-const FieldValue = require("firebase-admin").firestore.FieldValue;
-const incrementInstruction = FieldValue.increment(1);
-const deleteInstruction = FieldValue.delete();
 const { asyncWrap } = require("express-error-middlewares");
 
 const authMiddleware = require("firebase-auth-express-middleware")({
@@ -33,9 +30,10 @@ router.get(
       ok: true,
 
       // Check if number has been reported before, and return data if it has been
+      // @todo Get reasons for being reported
       ...(doc.exists
-        ? { reported: true, numOfReports: doc.data().count, reasons: [] }
-        : { reported: false }),
+        ? { numOfReports: doc.data().count, reasons: [] }
+        : { numOfReports: 0 }),
     });
   })
 );

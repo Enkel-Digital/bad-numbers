@@ -14,7 +14,7 @@ const router = express.Router();
  * @returns {String} descriptive string
  */
 router.get("/", (req, res) =>
-  res.status(200).send("TP Temperature Taking Service")
+  res.status(200).send("'Bad Numbers' API Service")
 );
 
 /**
