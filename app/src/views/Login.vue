@@ -8,13 +8,22 @@
       pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
       v-model="phoneNumber"
       placeholder="Phone Number"
+      v-autofocus
     />
     <button id="sign-in-button" @click="sendOtp">Get OTP</button>
 
     <div id="recaptcha-container"></div>
     <br />
 
-    <input type="number" v-model="otp" placeholder="OTP" />
+    <input
+      type="number"
+      min="0"
+      inputmode="numeric"
+      pattern="[0-9]*"
+      title="OTP"
+      v-model="otp"
+      placeholder="OTP"
+    />
     <button @click="verifyOtp">Verify</button><br />
     <button @click="sendOtp">Resend OTP</button>
   </div>
