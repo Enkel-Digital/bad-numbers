@@ -12,6 +12,23 @@
     /> -->
 
       <div class="column">
+        <label for="phoneNumber">
+          Enter phone number (Include the country code):
+        </label>
+
+        <!-- Pattern matches for a + sign and any number of digits -->
+        <input
+          id="phoneNumber"
+          type="tel"
+          pattern="[\+][0-9]+"
+          v-model="phoneNumber"
+          placeholder="Phone Number"
+          required
+          v-autofocus
+        />
+      </div>
+
+      <div class="column">
         <router-link
           :to="{ name: 'search' }"
           class="button is-light is-fullwidth"
@@ -64,6 +81,8 @@ export default {
       buildTime: process.env.buildTime,
       commitHash: process.env.commitHash,
       gitBranch: process.env.gitBranch,
+
+      phoneNumber: "+",
     };
   },
 
@@ -72,3 +91,10 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+/* Color input pink if it is invalid --> when telephone number does not match the specified pattern */
+input:invalid {
+  background-color: pink;
+}
+</style>
