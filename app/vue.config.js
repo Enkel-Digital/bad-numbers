@@ -25,10 +25,32 @@
 //   }),
 // ];
 
+const webpack = require("webpack");
+
+// Get git values to be use in the vue app
+const childProcess = require("child_process");
+const gitValues = {
+  commitHash: childProcess.execSync("git rev-parse HEAD").toString(),
+  gitBranch: childProcess
+    .execSync("git rev-parse --abbrev-ref HEAD")
+    .toString(),
+};
+
 module.exports = {
   // configureWebpack(config) {
   //   if (process.env.NODE_ENV === "production") {
   //     config.plugins.push(...productionPlugins);
   //   }
   // },
+
+  configureWebpack(config) {
+    config.plugins.push(
+      // Create a plugin to inject in environment variables like git values and buildTime
+      // https://webpack.js.org/plugins/environment-plugin/
+      new webpack.EnvironmentPlugin({
+        ...gitValues,
+        buildTime: Date(),
+      })
+    );
+  },
 };

@@ -35,9 +35,19 @@
         </button>
       </div>
 
-      <!-- <div>
-      <p>version: {{ buildTime + " " + commitHash.slice(0, 6).toString() }}</p>
-    </div> -->
+      <div
+        style="
+          font-size: 0.7em;
+          position: fixed;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          bottom: 0.5em;
+        "
+      >
+        Version: {{ gitBranch + " " + commitHash.slice(0, 6).toString() }}
+        <br />
+        Build Time: {{ buildTime }}
+      </div>
     </div>
   </div>
 </template>
@@ -50,8 +60,10 @@ export default {
 
   data() {
     return {
+      // Environment variables injected in by webpack, configured in vue.config.js
       buildTime: process.env.buildTime,
       commitHash: process.env.commitHash,
+      gitBranch: process.env.gitBranch,
     };
   },
 
