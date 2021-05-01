@@ -30,19 +30,19 @@
 
       <div class="column">
         <router-link
-          :to="{ name: 'search' }"
+          :to="{ name: 'search', params: { num: this.phoneNumber } }"
           class="button is-light is-fullwidth"
         >
-          Search a number
+          Search
         </router-link>
       </div>
 
       <div class="column">
         <router-link
-          :to="{ name: 'report' }"
+          :to="{ name: 'report', params: { num: this.phoneNumber } }"
           class="button is-light is-fullwidth"
         >
-          Report a number
+          Report
         </router-link>
       </div>
 

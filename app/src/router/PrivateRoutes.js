@@ -15,13 +15,15 @@ const routes = [
     meta: { Auth_requirements: AuthType.private },
   },
   {
-    path: "/report",
+    path: "/report/:num",
+    props: true,
     name: "report",
     component: () => import("@/views/Report.vue"),
     meta: { Auth_requirements: AuthType.private },
   },
   {
-    path: "/search",
+    path: "/search/:num",
+    props: true,
     name: "search",
     component: () => import("@/views/Search.vue"),
     meta: { Auth_requirements: AuthType.private },
