@@ -44,6 +44,7 @@
     <!-- Textarea (120 characters) for user to enter a none default reason -->
     <div class="column" v-if="reason === 'Something else'">
       <textarea
+        v-model="customReason"
         class="textarea"
         placeholder="Your Reason (MAX 120 characters)"
         maxlength="120"
@@ -89,6 +90,8 @@ export default {
         " Spam Message ",
       ],
 
+      customReason: "",
+
       terms_and_conditions: false,
     };
   },
@@ -101,10 +104,16 @@ export default {
       if (this.reason === "--- Why is this number bad? ---")
         return alert("Please select a reason for reporting!");
 
+      if (this.reason === "Something else" && this.customReason === "")
+        return alert("Please enter a reason for reporting!");
+
+      // If there is a custom reason, set it to be the reason
+      if (this.reason === "Something else") this.reason = this.customReason;
+
       // HTML form validation will have already taken care of this
       // if (!/[+][0-9]+/.test(this.num)) return;
 
-      console.log(this.num);
+      console.log({ num: this.num, reason: this.reason });
 
       // Update user and Return to home screen once number has been reported
       alert("Number has been reported!");
