@@ -2,22 +2,7 @@
   <div>
     <!-- Include the side nav bar component -->
 
-    <form @submit.prevent="report">
-      <label for="phone">
-        Enter phone number (Include the country code):
-      </label>
-
-      <!-- Pattern matches for a + sign and any number of digits -->
-      <input
-        type="tel"
-        pattern="[\+][0-9]+"
-        v-model="phoneNumber"
-        placeholder="Phone Number"
-        required
-      />
-
-      <input type="submit" value="Report" />
-    </form>
+    <!-- Limit the length of the reported reason -->
   </div>
 </template>
 
@@ -25,11 +10,7 @@
 export default {
   name: "report",
 
-  data() {
-    return {
-      phoneNumber: undefined,
-    };
-  },
+  props: ["num"],
 
   methods: {
     report() {
@@ -41,10 +22,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-/* Color input pink if it is invalid --> when telephone number does not match the specified pattern */
-input:invalid {
-  background-color: pink;
-}
-</style>

@@ -53,10 +53,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-/* Color input pink if it is invalid --> when telephone number does not match the specified pattern */
-input:invalid {
-  background-color: pink;
-}
-</style>
