@@ -1,83 +1,95 @@
 <template>
-  <div class="columns">
-    <!-- Include the side nav bar component -->
+  <div>
+    <!-- Show full screen loader while waiting for number to be reported -->
+    <loader v-if="reporting" />
 
-    <div class="column">Number: {{ num }}</div>
+    <div v-else class="columns">
+      <!-- Include the side nav bar component -->
 
-    <div
-      class="column dropdown"
-      :class="{ 'is-active': showDropDown }"
-      @click="showDropDown = !showDropDown"
-      style="text-align: left"
-    >
-      <div class="dropdown-trigger">
-        <button
-          class="button"
-          aria-haspopup="true"
-          aria-controls="dropdown-menu"
-        >
-          <span>{{ reason }} </span>
-          <span class="icon is-small">
-            <i class="fas fa-angle-down" aria-hidden="true"></i>
-          </span>
-        </button>
-      </div>
-      <div class="dropdown-menu" id="dropdown-menu" role="menu">
-        <div class="dropdown-content">
-          <div
-            v-for="(defaultReason, i) in defaultReasons"
-            :key="i"
-            class="dropdown-item"
-            @click="reason = defaultReason"
+      <div class="column">Number: {{ num }}</div>
+
+      <div
+        class="column dropdown"
+        :class="{ 'is-active': showDropDown }"
+        @click="showDropDown = !showDropDown"
+        style="text-align: left"
+      >
+        <div class="dropdown-trigger">
+          <button
+            class="button"
+            aria-haspopup="true"
+            aria-controls="dropdown-menu"
           >
-            {{ defaultReason }}
-          </div>
+            <span>{{ reason }} </span>
+            <span class="icon is-small">
+              <i class="fas fa-angle-down" aria-hidden="true"></i>
+            </span>
+          </button>
+        </div>
+        <div class="dropdown-menu" id="dropdown-menu" role="menu">
+          <div class="dropdown-content">
+            <div
+              v-for="(defaultReason, i) in defaultReasons"
+              :key="i"
+              class="dropdown-item"
+              @click="reason = defaultReason"
+            >
+              {{ defaultReason }}
+            </div>
 
-          <hr class="dropdown-divider" />
-          <div class="dropdown-item" @click="reason = 'Something else'">
-            Something else
+            <hr class="dropdown-divider" />
+            <div class="dropdown-item" @click="reason = 'Something else'">
+              Something else
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Textarea (120 characters) for user to enter a none default reason -->
-    <div class="column" v-if="reason === 'Something else'">
-      <textarea
-        v-model="customReason"
-        class="textarea"
-        placeholder="Your Reason (MAX 120 characters)"
-        maxlength="120"
-        style="resize: none"
-      />
-    </div>
+      <!-- Textarea (120 characters) for user to enter a none default reason -->
+      <div class="column" v-if="reason === 'Something else'">
+        <textarea
+          v-model="customReason"
+          class="textarea"
+          placeholder="Your Reason (MAX 120 characters)"
+          maxlength="120"
+          style="resize: none"
+        />
+      </div>
 
-    <label class="column">
-      <input type="checkbox" v-model="terms_and_conditions" />
-      I agree to the
-      <a target="_blank" href="#/ ">terms and conditions</a>
-    </label>
+      <label class="column">
+        <input type="checkbox" v-model="terms_and_conditions" />
+        I agree to the
+        <a target="_blank" href="#/ ">terms and conditions</a>
+      </label>
 
-    <!-- Column wrapper to give a bit of margin around the button -->
-    <div class="column mx-4">
-      <button
-        class="button is-light is-danger is-outlined is-medium is-fullwidth"
-        @click="report"
-      >
-        report
-      </button>
+      <!-- Column wrapper to give a bit of margin around the button -->
+      <div class="column mx-4">
+        <button
+          class="button is-light is-danger is-outlined is-medium is-fullwidth"
+          @click="report"
+        >
+          report
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import loader from "./Loader";
+
 export default {
   name: "report",
+
+  components: { loader },
 
   props: ["num"],
 
   data() {
     return {
+      // Variable used to track if number is being reported using the API to show the loader
+      reporting: false,
+
       // Bool to control drop down menu for reasons
       showDropDown: false,
 
@@ -113,11 +125,17 @@ export default {
       // HTML form validation will have already taken care of this
       // if (!/[+][0-9]+/.test(this.num)) return;
 
+      // Show loader once validation is completed and before calling the API
+      this.reporting = true;
+
       console.log({ num: this.num, reason: this.reason });
 
-      // Update user and Return to home screen once number has been reported
-      alert("Number has been reported!");
-      this.$router.push({ name: "home" });
+      // Simulate API call
+      setTimeout(() => {
+        // Update user and Return to home screen once number has been reported
+        alert("Number has been reported!");
+        this.$router.push({ name: "home" });
+      }, 1200);
     },
   },
 };

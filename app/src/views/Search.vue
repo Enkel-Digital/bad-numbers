@@ -39,6 +39,7 @@ export default {
 
   data() {
     return {
+      // Variable used to track if search result is loaded
       searching: true,
 
       search: {
