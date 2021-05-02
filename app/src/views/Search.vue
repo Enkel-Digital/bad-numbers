@@ -2,8 +2,10 @@
   <div>
     <!-- Include the side nav bar component -->
 
+    <!-- Show full screen loader before search result is loaded -->
+    <loader v-if="searching" />
     <!-- Search results -->
-    <div class="cloumns">
+    <div v-else class="cloumns">
       <div class="column">Number: {{ num }}</div>
 
       <div v-if="search.reported">
@@ -21,16 +23,24 @@
       <div v-else>Great news, this number has not been reported before!</div>
     </div>
   </div>
+
+  <!-- a button to report this number! maybe not? -->
 </template>
 
 <script>
+import loader from "./Loader";
+
 export default {
   name: "search",
+
+  components: { loader },
 
   props: ["num"],
 
   data() {
     return {
+      searching: true,
+
       search: {
         // 0 because, this will be the number of times it has been reported, and 0 represents not reported before which will be the default
         // Actually change to something to else to show a loading screen? With CSS preferably
@@ -50,6 +60,9 @@ export default {
       reported: 2,
       reasons: ["Scam call", "Spam"],
     };
+
+    setTimeout(() => (this.searching = false), 1200);
+    // this.searching = false;
   },
 };
 </script>
