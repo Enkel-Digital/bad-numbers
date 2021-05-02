@@ -52,7 +52,7 @@
     </div>
 
     <label class="column">
-      <input type="checkbox" />
+      <input type="checkbox" v-model="terms_and_conditions" />
       I agree to the
       <a target="_blank" href="#/ ">terms and conditions</a>
     </label>
@@ -80,7 +80,7 @@ export default {
       // Bool to control drop down menu for reasons
       showDropDown: false,
 
-      reason: "Why is this number bad?",
+      reason: "--- Why is this number bad? ---",
 
       defaultReasons: [
         " Scam Call ",
@@ -88,15 +88,27 @@ export default {
         " Spam Call ",
         " Spam Message ",
       ],
+
+      terms_and_conditions: false,
     };
   },
 
   methods: {
     report() {
+      if (!this.terms_and_conditions)
+        return alert("Please agree to the terms and conditions first!");
+
+      if (this.reason === "--- Why is this number bad? ---")
+        return alert("Please select a reason for reporting!");
+
       // HTML form validation will have already taken care of this
       // if (!/[+][0-9]+/.test(this.num)) return;
 
       console.log(this.num);
+
+      // Update user and Return to home screen once number has been reported
+      alert("Number has been reported!");
+      this.$router.push({ name: "home" });
     },
   },
 };
