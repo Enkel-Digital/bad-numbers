@@ -2,22 +2,24 @@
   <div>
     <!-- Include the side nav bar component -->
 
-    <form @submit.prevent="search">
-      <label for="phone">
-        Enter phone number (Include the country code):
-      </label>
+    <!-- Search results -->
+    <div class="cloumns">
+      <div class="column">Number: {{ num }}</div>
 
-      <!-- Pattern matches for a + sign and any number of digits -->
-      <input
-        type="tel"
-        pattern="[\+][0-9]+"
-        v-model="phoneNumber"
-        placeholder="Phone Number"
-        required
-      />
+      <div v-if="search.reported">
+        <div class="column">Reported: {{ search.reported }}</div>
 
-      <input type="submit" value="Search" />
-    </form>
+        <div class="column content">
+          Reasons:
+          <ol>
+            <li class="content" v-for="(reason, i) in search.reasons" :key="i">
+              {{ reason }}
+            </li>
+          </ol>
+        </div>
+      </div>
+      <div v-else>Great news, this number has not been reported before!</div>
+    </div>
   </div>
 </template>
 
@@ -25,19 +27,29 @@
 export default {
   name: "search",
 
+  props: ["num"],
+
   data() {
     return {
-      phoneNumber: undefined,
+      search: {
+        // 0 because, this will be the number of times it has been reported, and 0 represents not reported before which will be the default
+        // Actually change to something to else to show a loading screen? With CSS preferably
+        reported: 0,
+      },
     };
   },
 
-  methods: {
-    search() {
-      // HTML form validation will have already taken care of this
-      // if (!/[+][0-9]+/.test(this.phoneNumber)) return;
+  // Run the search on component creation
+  created() {
+    // If have additional validation, make it into a utils module and import to reuse since report view will also need
+    // HTML form validation will have already taken care of this
+    // if (!/[+][0-9]+/.test(this.num)) return;
 
-      console.log(this.phoneNumber);
-    },
+    // Simulate an API call to get search results
+    this.search = {
+      reported: 2,
+      reasons: ["Scam call", "Spam"],
+    };
   },
 };
 </script>
