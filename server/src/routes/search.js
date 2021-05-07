@@ -10,6 +10,19 @@ const router = express.Router();
 const fs = require("../utils/fs");
 const { asyncWrap } = require("express-error-middlewares");
 
+async function getReasons(number) {
+  // Filter for the specific reports and only select the 'reason' field
+  const snapshot = await fs
+    .collection("reports")
+    .where("number", "==", number)
+    .select("reason")
+    .limit(5) // Limit to top 5 reports
+    .get();
+
+  // snapshot.empty --> should be impossible if the num has been reported before
+  return snapshot.docs.map((doc) => doc.data());
+}
+
 /**
  * Search for a number if it is reported before and the reasons for it
  * @name GET /search/:number
@@ -25,11 +38,13 @@ router.get(
     res.status(200).json({
       ok: true,
 
-      // Check if number has been reported before, and return data if it has been
-      // @todo Get reasons for being reported
+      // Return data if number has been reported before
       ...(doc.exists
-        ? { numOfReports: doc.data().count, reasons: [] }
-        : { numOfReports: 0 }),
+        ? {
+            reported: doc.data().reported,
+            reasons: await getReasons(number),
+          }
+        : { reported: 0 }),
     });
   })
 );
