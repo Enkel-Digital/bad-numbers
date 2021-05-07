@@ -47,5 +47,5 @@ content-type: application/json
 
 {
     "number": "+6584138820",
-    "reasonID": "0"
+    "reason": "scam"
 }
