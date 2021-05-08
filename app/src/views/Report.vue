@@ -77,6 +77,7 @@
 
 <script>
 import loader from "./Loader";
+import firebase from "firebase/app";
 
 export default {
   name: "report",
@@ -109,7 +110,7 @@ export default {
   },
 
   methods: {
-    report() {
+    async report() {
       if (!this.terms_and_conditions)
         return alert("Please agree to the terms and conditions first!");
 
@@ -128,14 +129,26 @@ export default {
       // Show loader once validation is completed and before calling the API
       this.reporting = true;
 
-      console.log({ num: this.num, reason: this.reason });
+      try {
+        const response = await fetch("http://localhost:3000/report", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: await getAuthHeader(firebase.auth),
+          },
+          body: JSON.stringify({ num: this.num, reason: this.reason }),
+        }).then((response) => response.json());
 
-      // Simulate API call
-      setTimeout(() => {
+        if (!response.ok) throw new Error(response.error);
+
         // Update user and Return to home screen once number has been reported
         alert("Number has been reported!");
         this.$router.push({ name: "home" });
-      }, 1200);
+      } catch (error) {
+        this.reporting = false;
+        console.error(error);
+        alert("Something went wrong!");
+      }
     },
   },
 };

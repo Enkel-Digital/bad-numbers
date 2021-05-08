@@ -46,6 +46,6 @@ POST {{host}}/report
 content-type: application/json
 
 {
-    "number": "+6584138820",
+    "num": "+6584138820",
     "reason": "scam"
 }
