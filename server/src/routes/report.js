@@ -13,9 +13,9 @@ const incrementInstruction = FieldValue.increment(1);
 const { asyncWrap } = require("express-error-middlewares");
 
 // Report a number by updating the specific number's document, or create a new doc for it
-async function reportNumber(number) {
+async function reportNumber(num) {
   // Get ref to the Doc which is used both to check if it exists and to write data to it later on
-  const docRef = fs.collection("numbers").doc(number);
+  const docRef = fs.collection("numbers").doc(num);
 
   // READ the doc to check if it exists, EXTREMELY STUPID, but firebase cannot check for exists without a full read....
   // See: https://www.reddit.com/r/Firebase/comments/fqxr3y/check_if_document_exists_without_reading_it/
@@ -28,9 +28,9 @@ async function reportNumber(number) {
 }
 
 // Add a report/reason for why the number is reported in the reports collection
-async function addReason(number, reason) {
+async function addReason(num, reason) {
   // Add a new document/"row" to the reports collection for the new report
-  return fs.collection("reports").add({ number, reason });
+  return fs.collection("reports").add({ num, reason, time });
 }
 
 /**
@@ -43,10 +43,10 @@ router.post(
   express.json(),
   asyncWrap(async (req, res) => {
     // Read number and reason for reporting from request body
-    const { number, reason } = req.body;
+    const { num, reason } = req.body;
 
-    await reportNumber(number);
-    await addReason(number, reason);
+    await reportNumber(num);
+    await addReason(num, reason);
 
     res.status(200).json({ ok: true });
   })
