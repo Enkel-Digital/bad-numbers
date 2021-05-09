@@ -44,8 +44,9 @@ export default {
 
   methods: {
     async sendOtp() {
-      let phoneNumber = this.phoneNumber;
-      let recaptchaVerifier = window.recaptchaVerifier;
+      // Check if phone number starts with a +, if no, then error
+      const phoneNumber = this.phoneNumber;
+      const recaptchaVerifier = window.recaptchaVerifier;
 
       try {
         const confirmationResult = await firebase
@@ -67,8 +68,8 @@ export default {
       try {
         if (this.otp.length != 6) return alert("Invalid OTP!");
 
-        let vm = this;
-        let otp = this.otp;
+        const vm = this;
+        const otp = this.otp;
 
         const result = await this.confirmationResult.confirm(otp);
 
@@ -84,7 +85,7 @@ export default {
     },
 
     initReCaptcha() {
-      // let vm = this;
+      // const vm = this;
       window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
         "recaptcha-container",
         {
