@@ -20,7 +20,8 @@ async function getReasons(number) {
     .get();
 
   // snapshot.empty --> should be impossible if the num has been reported before
-  return snapshot.docs.map((doc) => doc.data());
+  // @todo Tmp return an array of just the reason strings
+  return snapshot.docs.map((doc) => doc.data().reason);
 }
 
 /**

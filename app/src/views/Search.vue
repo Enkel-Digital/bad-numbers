@@ -9,7 +9,9 @@
       <div class="column">Number: {{ num }}</div>
 
       <div v-if="search_result.reported">
-        <div class="column">Reported: {{ search_result.reported }}</div>
+        <div class="column">
+          Reported: <b>{{ search_result.reported }}</b> times
+        </div>
 
         <div class="column content">
           Recent Reasons:
