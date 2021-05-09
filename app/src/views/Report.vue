@@ -98,10 +98,11 @@ export default {
       reason: "--- Why is this number bad? ---",
 
       defaultReasons: [
-        " Scam Call ",
-        " Scam Message ",
-        " Spam Call ",
-        " Spam Message ",
+        "Scam Call",
+        "Scam Message",
+        "Spam Call",
+        "Spam Message",
+        "telemarketing",
       ],
 
       customReason: "",
