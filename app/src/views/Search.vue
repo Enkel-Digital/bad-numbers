@@ -8,13 +8,17 @@
     <div v-else class="cloumns">
       <div class="column">Number: {{ num }}</div>
 
-      <div v-if="search.reported">
-        <div class="column">Reported: {{ search.reported }}</div>
+      <div v-if="search_result.reported">
+        <div class="column">Reported: {{ search_result.reported }}</div>
 
         <div class="column content">
-          Reasons:
+          Recent Reasons:
           <ol>
-            <li class="content" v-for="(reason, i) in search.reasons" :key="i">
+            <li
+              class="content"
+              v-for="(reason, i) in search_result.reasons"
+              :key="i"
+            >
               {{ reason }}
             </li>
           </ol>
@@ -29,6 +33,8 @@
 
 <script>
 import loader from "./Loader";
+import firebase from "firebase/app";
+import { ffetch, getAuthHeader } from "../utils/fetch";
 
 export default {
   name: "search",
@@ -42,7 +48,7 @@ export default {
       // Variable used to track if search result is loaded
       searching: true,
 
-      search: {
+      search_result: {
         // 0 because, this will be the number of times it has been reported, and 0 represents not reported before which will be the default
         // Actually change to something to else to show a loading screen? With CSS preferably
         reported: 0,
@@ -50,20 +56,39 @@ export default {
     };
   },
 
-  // Run the search on component creation
+  // Run search method on component creation
   created() {
-    // If have additional validation, make it into a utils module and import to reuse since report view will also need
-    // HTML form validation will have already taken care of this
-    // if (!/[+][0-9]+/.test(this.num)) return;
+    this.search();
+  },
 
-    // Simulate an API call to get search results
-    this.search = {
-      reported: 2,
-      reasons: ["Scam call", "Spam"],
-    };
+  methods: {
+    async search() {
+      // If have additional validation, make it into a utils module and import to reuse since report view will also need
+      // HTML form validation will have already taken care of this
+      // if (!/[+][0-9]+/.test(this.num)) return;
 
-    setTimeout(() => (this.searching = false), 1200);
-    // this.searching = false;
+      try {
+        const response = await ffetch(
+          `http://localhost:3000/search/${this.num}`,
+          {
+            method: "GET",
+            headers: { Authorization: await getAuthHeader(firebase.auth) },
+          }
+        ).then((response) => response.json());
+
+        if (!response.ok) throw new Error(response.error);
+
+        // Set response onto search_result obj of this vue component for auto UI update
+        this.search_result = response;
+
+        // Remove loader once search result is received
+        this.searching = false;
+      } catch (error) {
+        this.searching = false;
+        console.error(error);
+        alert("Something went wrong!");
+      }
+    },
   },
 };
 </script>
