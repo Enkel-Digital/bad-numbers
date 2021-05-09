@@ -78,6 +78,7 @@
 <script>
 import loader from "./Loader";
 import firebase from "firebase/app";
+import { ffetch, getAuthHeader } from "../utils/fetch";
 
 export default {
   name: "report",
@@ -130,14 +131,17 @@ export default {
       this.reporting = true;
 
       try {
-        const response = await fetch("http://localhost:3000/report", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: await getAuthHeader(firebase.auth),
+        const response = await ffetch(
+          "http://localhost:3000/report",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: await getAuthHeader(firebase.auth),
+            },
           },
-          body: JSON.stringify({ num: this.num, reason: this.reason }),
-        }).then((response) => response.json());
+          { num: this.num, reason: this.reason }
+        ).then((response) => response.json());
 
         if (!response.ok) throw new Error(response.error);
 
