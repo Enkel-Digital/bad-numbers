@@ -14,7 +14,7 @@ async function getReasons(number) {
   // Filter for the specific reports and only select the 'reason' field
   const snapshot = await fs
     .collection("reports")
-    .where("number", "==", number)
+    .where("num", "==", number)
     .select("reason")
     .limit(5) // Limit to top 5 reports
     .get();
