@@ -29,10 +29,8 @@ async function reportNumber(num) {
 
 // Add a report/reason for why the number is reported in the reports collection
 async function addReason(num, reason) {
-  const time = FieldValue.serverTimestamp();
-
   // Add a new document/"row" to the reports collection for the new report
-  return fs.collection("reports").add({ num, reason, time });
+  return fs.collection("reports").add({ num, reason, time: unixseconds() });
 }
 
 /**
