@@ -28,10 +28,16 @@ async function reportNumber(num) {
 }
 
 // Add a report/reason for why the number is reported in the reports collection
-async function addReason(num, reason) {
-  // Add a new document/"row" to the reports collection for the new report
-  return fs.collection("reports").add({ num, reason, time: unixseconds() });
-}
+const addReason = async (num, reason) =>
+  fs.collection("reports").add({
+    num,
+
+    // Strip white spaces from both end of reason string
+    reason: reason.trim(),
+
+    // Store the reporting time in unix seconds (this is the time of the server executing the code)
+    time: unixseconds(),
+  });
 
 /**
  * Report a number and a reason for reporting it
