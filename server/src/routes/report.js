@@ -29,9 +29,10 @@ async function reportNumber(num) {
 }
 
 // Add a report/reason for why the number is reported in the reports collection
-const addReason = async (num, reason) =>
+const addReason = async (num, by, reason) =>
   fs.collection("reports").add({
     num,
+    by,
 
     // Strip white spaces from both end of reason string
     reason: reason.trim(),
@@ -50,10 +51,10 @@ router.post(
   express.json(),
   asyncWrap(async (req, res) => {
     // Read number and reason for reporting from request body
-    const { num, reason } = req.body;
+    const { num, by, reason } = req.body;
 
     await reportNumber(num);
-    await addReason(num, reason);
+    await addReason(num, by, reason);
 
     res.status(200).json({ ok: true });
   })
