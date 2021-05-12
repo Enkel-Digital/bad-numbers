@@ -13,6 +13,16 @@ const incrementInstruction = FieldValue.increment(1);
 const unixseconds = require("unixseconds");
 const { asyncWrap } = require("express-error-middlewares");
 
+// Checks if the number has been reported before by the same person
+const reportedBeforeBy = async (num, by) =>
+  !(
+    await fs
+      .collection("reports")
+      .where("num", "==", num)
+      .where("by", "==", by)
+      .get()
+  ).empty;
+
 // Report a number by updating the specific number's document, or create a new doc for it
 async function reportNumber(num) {
   // Get ref to the Doc which is used both to check if it exists and to write data to it later on
@@ -52,6 +62,13 @@ router.post(
   asyncWrap(async (req, res) => {
     // Read number and reason for reporting from request body
     const { num, by, reason } = req.body;
+
+    // Prevent duplicated reports
+    if (await reportedBeforeBy(num, by))
+      return res.status(403).json({
+        ok: false,
+        error: "Cannot report same number more than once!",
+      });
 
     await reportNumber(num);
     await addReason(num, by, reason);
