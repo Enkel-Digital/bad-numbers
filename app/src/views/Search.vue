@@ -28,9 +28,18 @@
       </div>
       <div v-else>Great news, this number has not been reported before!</div>
     </div>
-  </div>
 
-  <!-- a button to report this number! maybe not? -->
+    <!-- Button to report currently searched number, at the bottom center of screen -->
+    <div class="column">
+      <router-link
+        style="position: absolute; bottom: 2em; right: 0; left: 0; margin: 1em"
+        :to="{ name: 'report', params: { num: this.num } }"
+        class="button is-light"
+      >
+        Report this number
+      </router-link>
+    </div>
+  </div>
 </template>
 
 <script>
