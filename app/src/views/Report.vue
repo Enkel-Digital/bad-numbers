@@ -141,7 +141,11 @@ export default {
               Authorization: await getAuthHeader(firebase.auth),
             },
           },
-          { num: this.num, reason: this.reason }
+          {
+            num: this.num,
+            by: firebase.auth().currentUser.phoneNumber,
+            reason: this.reason,
+          }
         ).then((response) => response.json());
 
         if (!response.ok) throw new Error(response.error);
