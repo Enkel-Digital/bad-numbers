@@ -1,43 +1,59 @@
 <template>
-  <div>
+  <div style="text-align: left">
     <!-- Include the side nav bar component -->
 
     <!-- Show full screen loader before search result is loaded -->
     <loader v-if="searching" />
     <!-- Search results -->
     <div v-else class="cloumns">
-      <div class="column">Number: {{ num }}</div>
+      <div class="column mx-4 mt-4 pb-0">Number: {{ num }}</div>
 
-      <div v-if="search_result.reported">
-        <div class="column">
-          Reported: <b>{{ search_result.reported }}</b> times
-        </div>
+      <div v-if="search_result.reported" class="column">
+        <div class="columns">
+          <div class="column mx-4 pb-0">
+            Reported: <b>{{ search_result.reported }}</b> times
+          </div>
 
-        <div class="column content">
-          Recent Reasons:
-          <ol>
-            <li
-              class="content"
-              v-for="(reason, i) in search_result.reasons"
-              :key="i"
+          <div class="column content">
+            <div style="padding-left: 1em; font-weight: bold">
+              Recent Reasons:
+            </div>
+            <!-- @todo Remove the fixed 60vh -->
+            <div style="height: 60vh; overflow-y: scroll">
+              <ol>
+                <li
+                  class="content"
+                  v-for="(reason, i) in search_result.reasons"
+                  :key="i"
+                >
+                  {{ reason }}
+                </li>
+              </ol>
+            </div>
+          </div>
+
+          <!-- Button to report currently searched number, at the bottom center of screen -->
+          <div class="column">
+            <router-link
+              style="
+                position: absolute;
+                bottom: 2em;
+                right: 0;
+                left: 0;
+                margin: 1em;
+              "
+              :to="{ name: 'report', params: { num: this.num } }"
+              class="button is-light"
             >
-              {{ reason }}
-            </li>
-          </ol>
+              Report this number
+            </router-link>
+          </div>
         </div>
       </div>
-      <div v-else>Great news, this number has not been reported before!</div>
-    </div>
 
-    <!-- Button to report currently searched number, at the bottom center of screen -->
-    <div class="column">
-      <router-link
-        style="position: absolute; bottom: 2em; right: 0; left: 0; margin: 1em"
-        :to="{ name: 'report', params: { num: this.num } }"
-        class="button is-light"
-      >
-        Report this number
-      </router-link>
+      <div v-else class="column">
+        Great news, this number has not been reported before!
+      </div>
     </div>
   </div>
 </template>
