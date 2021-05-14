@@ -133,7 +133,10 @@ export default {
 
       try {
         const response = await ffetch(
-          "http://localhost:3000/report",
+          process.env.NODE_ENV === "production"
+            ? "https://api-dw64m6z4wq-uc.a.run.app/report"
+            : "http://localhost:3000/report",
+
           {
             method: "POST",
             headers: {

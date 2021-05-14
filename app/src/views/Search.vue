@@ -96,7 +96,9 @@ export default {
 
       try {
         const response = await ffetch(
-          `http://localhost:3000/search/${this.num}`,
+          process.env.NODE_ENV === "production"
+            ? `https://api-dw64m6z4wq-uc.a.run.app/search/${this.num}`
+            : `http://localhost:3000/search/${this.num}`,
           {
             method: "GET",
             headers: { Authorization: await getAuthHeader(firebase.auth) },
