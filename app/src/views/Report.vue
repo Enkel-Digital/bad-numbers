@@ -1,24 +1,25 @@
 <template>
-  <div>
+  <div style="text-align: left">
     <!-- Show full screen loader while waiting for number to be reported -->
     <loader v-if="reporting" />
 
     <div v-else class="columns">
       <!-- Include the side nav bar component -->
 
-      <div class="column">Number: {{ num }}</div>
+      <!-- <div class="column">Number: {{ num }}</div> -->
+      <div class="column mx-4 mt-4 pb-0">Number: {{ num }}</div>
 
       <div
-        class="column dropdown"
+        class="column dropdown mx-4"
         :class="{ 'is-active': showDropDown }"
         @click="showDropDown = !showDropDown"
-        style="text-align: left"
       >
         <div class="dropdown-trigger">
           <button
             class="button"
             aria-haspopup="true"
             aria-controls="dropdown-menu"
+            style="width: 100%"
           >
             <span>{{ reason }} </span>
             <span class="icon is-small">
@@ -46,7 +47,7 @@
       </div>
 
       <!-- Textarea (120 characters) for user to enter a none default reason -->
-      <div class="column" v-if="reason === 'Something else'">
+      <div class="column mx-4" v-if="reason === 'Something else'">
         <textarea
           v-model="customReason"
           class="textarea"
@@ -56,7 +57,7 @@
         />
       </div>
 
-      <label class="column">
+      <label class="column mx-4">
         <input type="checkbox" v-model="terms_and_conditions" />
         I agree to the
         <a target="_blank" href="#/ ">terms and conditions</a>
