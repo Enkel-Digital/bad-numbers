@@ -1,5 +1,5 @@
 <template>
-  <div style="text-align: left">
+  <div id="center">
     <!-- Show full screen loader while waiting for number to be reported -->
     <loader v-if="reporting" />
 
@@ -166,3 +166,14 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+#center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: left;
+  min-height: 100vh;
+}
+</style>
