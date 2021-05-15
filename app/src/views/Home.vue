@@ -1,19 +1,9 @@
 <template>
-  <div class="section">
-    <div id="welcome" class="columns is-vcentered is-centered is-multiline">
-      <!-- Is the eager tag preventing the splash from loading? maybe not, since when logged in alr, it still does not load -->
-      <!-- <img
-      eager
-      alt="ClassExpress logo"
-      src="../assets/logo.png"
-      max-height="calc(100% - 1em)"
-      max-width="calc(100% - 1em)"
-      style="margin-top: calc(20%)"
-    /> -->
-
+  <div id="center" class="section">
+    <div class="columns is-vcentered is-centered is-multiline">
       <div class="column">
         <label for="phoneNumber">
-          Enter phone number (Include the country code):
+          <b>Enter phone number with country code</b>
         </label>
 
         <!-- Pattern matches for a + sign and any number of digits -->
@@ -24,6 +14,8 @@
           v-model="phoneNumber"
           placeholder="Phone Number"
           required
+          class="input"
+          style="width: 100%"
           v-autofocus
         />
       </div>
@@ -51,20 +43,21 @@
           logout
         </button>
       </div>
+    </div>
 
-      <div
-        style="
-          font-size: 0.7em;
-          position: fixed;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          bottom: 0.5em;
-        "
-      >
-        Version: {{ gitBranch + " " + commitHash.slice(0, 6).toString() }}
-        <br />
-        Build Time: {{ buildTime }}
-      </div>
+    <div
+      style="
+        font-size: 0.7em;
+        position: fixed;
+        left: 50%;
+        bottom: 0.5em;
+        width: 80%;
+        transform: translate(-50%, -50%);
+      "
+    >
+      Version: {{ gitBranch + " " + commitHash.slice(0, 6).toString() }}
+      <br />
+      Build Time: {{ buildTime }}
     </div>
   </div>
 </template>
@@ -96,5 +89,14 @@ export default {
 /* Color input pink if it is invalid --> when telephone number does not match the specified pattern */
 input:invalid {
   background-color: pink;
+}
+
+#center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: left;
+  min-height: 100vh;
 }
 </style>
