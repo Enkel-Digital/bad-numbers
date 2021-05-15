@@ -27,7 +27,12 @@
             </span>
           </button>
         </div>
-        <div class="dropdown-menu" id="dropdown-menu" role="menu">
+        <div
+          class="dropdown-menu"
+          id="dropdown-menu"
+          role="menu"
+          style="width: 100%"
+        >
           <div class="dropdown-content">
             <div
               v-for="(defaultReason, i) in defaultReasons"
