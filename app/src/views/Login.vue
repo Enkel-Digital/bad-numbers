@@ -14,7 +14,7 @@
           type="tel"
           pattern="[\+][0-9]+"
           v-model="phoneNumber"
-          placeholder="Phone Number"
+          placeholder="E.g. +65 91234567"
           required
           class="input mb-4"
           style="width: 100%"
@@ -167,3 +167,11 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+/* Color input pink if it is invalid --> when telephone number does not match the specified pattern */
+/* Will only activate if the placeholder is not currently being shown, meaning will not show before user type anything */
+input:not(:placeholder-shown):invalid {
+  background-color: lightpink;
+}
+</style>
