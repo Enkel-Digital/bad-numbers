@@ -23,12 +23,13 @@ export default {
   color: #2c3e50;
 }
 
-.hero-image {
-  overflow: hidden;
-  position: absolute;
-  object-fit: cover;
-  object-position: center center;
-  width: 100%;
-  height: 100%;
+// Shared class for all views.
+.center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: left;
+  min-height: 100vh;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div id="center" class="section">
+  <div class="section center">
     <div class="columns is-vcentered is-centered is-multiline">
       <div class="column">
         <label for="phoneNumber">
@@ -89,14 +89,5 @@ export default {
 /* Color input pink if it is invalid --> when telephone number does not match the specified pattern */
 input:invalid {
   background-color: pink;
-}
-
-#center {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: left;
-  min-height: 100vh;
 }
 </style>
