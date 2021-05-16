@@ -48,6 +48,7 @@
           class="input mb-4"
           style="width: 100%"
           v-autofocus
+          @keypress.enter="verifyOtp"
         />
 
         <button class="button is-light is-fullwidth is-danger" @click="sendOtp">
@@ -130,11 +131,13 @@ export default {
     },
 
     async verifyOtp() {
-      try {
-        if (this.otp.length != 6) return alert("Invalid OTP!");
+      if (this.otp.length != 6) return alert("Invalid OTP!");
 
-        const vm = this;
-        const otp = this.otp;
+      const vm = this;
+      const otp = this.otp;
+
+      try {
+        this.loader = true;
 
         const result = await this.confirmationResult.confirm(otp);
 
@@ -148,6 +151,8 @@ export default {
 
         if (confirm("Re-Enter phone number?")) this.smsNotSent = true;
       }
+
+      this.loader = false;
     },
 
     initReCaptcha() {
