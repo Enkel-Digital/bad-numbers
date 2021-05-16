@@ -3,9 +3,8 @@
     <loader v-if="loader" />
 
     <div v-else>
-      <h2 class="column mx-4 mt-4 pb-0">Login</h2>
-
       <div v-if="smsNotSent" class="column">
+        <p class="subtitle">sign in</p>
         <label for="phoneNumber">
           <b>Enter phone number with country code</b>
         </label>
@@ -20,9 +19,13 @@
           class="input mb-4"
           style="width: 100%"
           v-autofocus
+          @keypress.enter="sendOtp"
         />
 
-        <button class="button is-light is-fullwidth" @click="sendOtp">
+        <button
+          class="button is-light is-fullwidth is-success"
+          @click="sendOtp"
+        >
           Get OTP
         </button>
       </div>
@@ -47,15 +50,18 @@
           v-autofocus
         />
 
-        <div class="columns">
-          <div class="column is-half">
-            <button class="button is-light" @click="verifyOtp">Verify</button>
-          </div>
+        <button class="button is-light is-fullwidth is-danger" @click="sendOtp">
+          Resend OTP
+        </button>
 
-          <div class="column is-half">
-            <button class="button is-light" @click="sendOtp">Resend OTP</button>
-          </div>
-        </div>
+        <br />
+
+        <button
+          class="button is-light is-fullwidth is-success"
+          @click="verifyOtp"
+        >
+          Verify
+        </button>
       </div>
     </div>
 
