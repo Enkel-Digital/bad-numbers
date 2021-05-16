@@ -1,56 +1,60 @@
 <template>
   <div class="columns center mx-4">
-    <h2 class="column mx-4 mt-4 pb-0">Login</h2>
+    <loader v-if="loader" />
 
-    <div v-if="smsNotSent" class="column">
-      <label for="phoneNumber">
-        <b>Enter phone number with country code</b>
-      </label>
+    <div v-else>
+      <h2 class="column mx-4 mt-4 pb-0">Login</h2>
 
-      <!-- Pattern matches for a + sign and any number of digits -->
-      <input
-        type="tel"
-        pattern="[\+][0-9]+"
-        v-model="phoneNumber"
-        placeholder="Phone Number"
-        required
-        class="input mb-4"
-        style="width: 100%"
-        v-autofocus
-      />
+      <div v-if="smsNotSent" class="column">
+        <label for="phoneNumber">
+          <b>Enter phone number with country code</b>
+        </label>
 
-      <button class="button is-light is-fullwidth" @click="sendOtp">
-        Get OTP
-      </button>
-    </div>
+        <!-- Pattern matches for a + sign and any number of digits -->
+        <input
+          type="tel"
+          pattern="[\+][0-9]+"
+          v-model="phoneNumber"
+          placeholder="Phone Number"
+          required
+          class="input mb-4"
+          style="width: 100%"
+          v-autofocus
+        />
 
-    <!-- Need to put width: 100% -->
-    <div v-else class="column" style="width: 100%">
-      <label for="otp">
-        <b>Enter OTP</b>
-      </label>
+        <button class="button is-light is-fullwidth" @click="sendOtp">
+          Get OTP
+        </button>
+      </div>
 
-      <!-- Pattern matches for a + sign and any number of digits -->
-      <input
-        type="number"
-        min="0"
-        inputmode="numeric"
-        pattern="[0-9]*"
-        v-model="otp"
-        placeholder="OTP"
-        required
-        class="input mb-4"
-        style="width: 100%"
-        v-autofocus
-      />
+      <!-- Need to put width: 100% -->
+      <div v-else class="column" style="width: 100%">
+        <label for="otp">
+          <b>Enter OTP</b>
+        </label>
 
-      <div class="columns">
-        <div class="column is-half">
-          <button class="button is-light" @click="verifyOtp">Verify</button>
-        </div>
+        <!-- Pattern matches for a + sign and any number of digits -->
+        <input
+          type="number"
+          min="0"
+          inputmode="numeric"
+          pattern="[0-9]*"
+          v-model="otp"
+          placeholder="OTP"
+          required
+          class="input mb-4"
+          style="width: 100%"
+          v-autofocus
+        />
 
-        <div class="column is-half">
-          <button class="button is-light" @click="sendOtp">Resend OTP</button>
+        <div class="columns">
+          <div class="column is-half">
+            <button class="button is-light" @click="verifyOtp">Verify</button>
+          </div>
+
+          <div class="column is-half">
+            <button class="button is-light" @click="sendOtp">Resend OTP</button>
+          </div>
         </div>
       </div>
     </div>
@@ -63,10 +67,19 @@
 <script>
 import firebase from "firebase/app";
 import "firebase/auth";
+import loader from "./Loader";
+
 
 export default {
+  name: "login",
+
+  components: { loader },
+
   data() {
     return {
+      // Used to toggle loader component's visibility
+      loader: false,
+
       // Used to toggle between showing phone number input and OTP input
       smsNotSent: true,
 
@@ -87,6 +100,8 @@ export default {
       const phoneNumber = this.phoneNumber;
       const recaptchaVerifier = window.recaptchaVerifier;
 
+      this.loader = true;
+
       try {
         const confirmationResult = await firebase
           .auth()
@@ -104,6 +119,8 @@ export default {
         // @todo Show error in console and alert box so easy for user to debug
         alert("Error! SMS not sent");
       }
+
+      this.loader = false;
     },
 
     async verifyOtp() {
