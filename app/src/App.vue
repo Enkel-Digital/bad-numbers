@@ -30,6 +30,6 @@ export default {
   justify-content: center;
   align-items: center;
   text-align: left;
-  min-height: 100vh;
+  height: 100vh;
 }
 </style>

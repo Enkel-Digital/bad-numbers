@@ -22,7 +22,7 @@
       <div class="column">
         <router-link
           :to="{ name: 'search', params: { num: this.phoneNumber } }"
-          class="button is-light is-fullwidth"
+          class="button is-light is-fullwidth is-success"
         >
           Search
         </router-link>
@@ -31,7 +31,7 @@
       <div class="column">
         <router-link
           :to="{ name: 'report', params: { num: this.phoneNumber } }"
-          class="button is-light is-fullwidth"
+          class="button is-light is-fullwidth is-danger"
         >
           Report
         </router-link>

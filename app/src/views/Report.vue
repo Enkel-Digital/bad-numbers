@@ -70,6 +70,16 @@
 
       <!-- Column wrapper to give a bit of margin around the button -->
       <div class="column mx-4">
+        <router-link
+          :to="{ name: 'home' }"
+          class="button is-light is-fullwidth"
+        >
+          back
+        </router-link>
+      </div>
+
+      <!-- Column wrapper to give a bit of margin around the button -->
+      <div class="column mx-4">
         <button
           class="button is-light is-danger is-outlined is-medium is-fullwidth"
           @click="report"
