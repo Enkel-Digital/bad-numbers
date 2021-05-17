@@ -1,5 +1,5 @@
 <template>
-  <div id="loader">
+  <div id="loader" class="center">
     <b style="font-size: 1.4em">... LOADING ...</b>
     <br />
     <div id="spinner" />
@@ -13,11 +13,8 @@ export default {
 </script>
 
 <style scoped>
+/* Overwrite the center class to make text-align center and also force cover entire view-port */
 #loader {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   text-align: center;
   min-height: 100vh;
 }
