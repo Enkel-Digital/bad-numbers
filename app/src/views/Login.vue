@@ -9,10 +9,10 @@
           <b>Enter phone number with country code</b>
         </label>
 
-        <!-- Pattern matches for a + sign and any number of digits -->
+        <!-- Pattern matches for a + sign and any number of digits and whitespaces -->
         <input
           type="tel"
-          pattern="[\+][0-9]+"
+          pattern="[\+][\s0-9]+"
           v-model="phoneNumber"
           placeholder="E.g. +65 91234567"
           required
@@ -75,7 +75,6 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import loader from "./Loader";
-
 
 export default {
   name: "login",

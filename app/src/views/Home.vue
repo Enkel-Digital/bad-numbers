@@ -6,13 +6,12 @@
           <b>Enter phone number with country code</b>
         </label>
 
-        <!-- Pattern matches for a + sign and any number of digits -->
+        <!-- Pattern matches for a + sign and any number of digits and whitespaces -->
         <input
-          id="phoneNumber"
           type="tel"
-          pattern="[\+][0-9]+"
+          pattern="[\+][\s0-9]+"
           v-model="phoneNumber"
-          placeholder="Phone Number"
+          placeholder="E.g. +65 91234567"
           required
           class="input"
           style="width: 100%"
@@ -75,7 +74,7 @@ export default {
       commitHash: process.env.commitHash,
       gitBranch: process.env.gitBranch,
 
-      phoneNumber: "+",
+      phoneNumber: "",
     };
   },
 
@@ -87,7 +86,8 @@ export default {
 
 <style scoped>
 /* Color input pink if it is invalid --> when telephone number does not match the specified pattern */
-input:invalid {
-  background-color: pink;
+/* Will only activate if the placeholder is not currently being shown, meaning will not show before user type anything */
+input:not(:placeholder-shown):invalid {
+  background-color: lightpink;
 }
 </style>
