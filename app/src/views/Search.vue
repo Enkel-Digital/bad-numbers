@@ -4,6 +4,7 @@
 
     <!-- Show full screen loader before search result is loaded -->
     <loader v-if="searching" />
+
     <!-- Search results -->
     <div v-else class="cloumns">
       <div class="column mx-4 mt-4 pb-0">Number: {{ num }}</div>
@@ -18,8 +19,8 @@
             <div style="padding-left: 1em; font-weight: bold">
               Recent Reasons:
             </div>
-            <!-- @todo Remove the fixed 60vh -->
-            <div style="height: 60vh; overflow-y: scroll">
+            <!-- @todo Remove the fixed view height -->
+            <div style="height: 50vh; overflow-y: scroll">
               <ol>
                 <li
                   class="content"
@@ -33,26 +34,68 @@
           </div>
 
           <!-- Button to report currently searched number, at the bottom center of screen -->
-          <div class="column">
-            <router-link
-              style="
-                position: absolute;
-                bottom: 2em;
-                right: 0;
-                left: 0;
-                margin: 1em;
-              "
-              :to="{ name: 'report', params: { num: this.num } }"
-              class="button is-light"
-            >
-              Report this number
-            </router-link>
+          <!-- @todo Remove the fixed position and use bulma columns force bottom class -->
+          <div
+            class="column"
+            style="
+              position: absolute;
+              bottom: 2em;
+              right: 0;
+              left: 0;
+              margin: 1em;
+            "
+          >
+            <div class="columns">
+              <div class="column">
+                <router-link
+                  :to="{ name: 'report', params: { num: this.num } }"
+                  class="button is-fullwidth is-light is-danger"
+                >
+                  report this number
+                </router-link>
+              </div>
+              <div class="column">
+                <router-link
+                  :to="{ name: 'home' }"
+                  class="button is-fullwidth is-light is-success"
+                >
+                  back
+                </router-link>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <div v-else class="column">
-        Great news, this number has not been reported before!
+      <!-- Card to show when the number has not reported before -->
+      <!-- Setting height to 90vh to give space to number on top, if 100vh here then it will be scrollable (we dont want that) -->
+      <div v-else class="column center" style="height: 90vh">
+        <div class="card">
+          <div class="card-content">
+            <p class="title">
+              Great news, this number has not been reported before!
+            </p>
+
+            <p class="subtitle pt-4">- Bad Numbers Team</p>
+          </div>
+
+          <footer class="card-footer">
+            <span class="card-footer-item">
+              <router-link
+                :to="{ name: 'report', params: { num: this.num } }"
+                style="color: pink"
+              >
+                Report this number
+              </router-link>
+            </span>
+
+            <span class="card-footer-item">
+              <router-link :to="{ name: 'home' }" style="color: green">
+                Go Back
+              </router-link>
+            </span>
+          </footer>
+        </div>
       </div>
     </div>
   </div>
