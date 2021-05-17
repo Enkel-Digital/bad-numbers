@@ -141,8 +141,19 @@ export default {
       // If there is a custom reason, set it to be the reason
       if (this.reason === "Something else") this.reason = this.customReason;
 
+      // Remove all spaces in phone number
+      const phoneNumber = this.num.replace(" ", "");
+
+      // Get the current user's phone number
+      const userNumber = firebase.auth().currentUser.phoneNumber;
+
+      if (phoneNumber === userNumber) {
+        alert("Hmm why are you reporting yourself 🤔 ?!?");
+        return this.$router.push({ name: "home" });
+      }
+
       // HTML form validation will have already taken care of this
-      // if (!/[+][0-9]+/.test(this.num)) return;
+      // if (!/[+][0-9]+/.test(phoneNumber)) return;
 
       // Show loader once validation is completed and before calling the API
       this.reporting = true;
@@ -161,8 +172,8 @@ export default {
             },
           },
           {
-            num: this.num,
-            by: firebase.auth().currentUser.phoneNumber,
+            num: phoneNumber,
+            by: userNumber,
             reason: this.reason,
           }
         ).then((response) => response.json());
@@ -175,7 +186,12 @@ export default {
       } catch (error) {
         this.reporting = false;
         console.error(error);
-        alert("Something went wrong!");
+
+        // If the error is because user attempted to report the same number more than once, then inform them and redirect home
+        if (error.message === "Cannot report same number more than once!") {
+          alert(error.message);
+          this.$router.push({ name: "home" });
+        } else alert("Something went wrong:\n" + error.message);
       }
     },
   },

@@ -102,8 +102,10 @@ export default {
 
   methods: {
     async sendOtp() {
-      // Check if phone number starts with a +, if no, then error
-      const phoneNumber = this.phoneNumber;
+      // @todo Check if phone number starts with a +, if no, then error
+      // Remove all spaces in phone number
+      const phoneNumber = this.phoneNumber.replace(" ", "");
+
       const recaptchaVerifier = window.recaptchaVerifier;
 
       this.loader = true;
@@ -159,11 +161,11 @@ export default {
         "recaptcha-container",
         {
           size: "invisible",
-          callback: function (response) {
-            // reCAPTCHA solved, allow signInWithPhoneNumber.
+          callback: (response) => {
+            console.log("reCAPTCHA solved, allow signInWithPhoneNumber");
           },
-          "expired-callback": function () {
-            // Response expired. Ask user to solve reCAPTCHA again.
+          "expired-callback": () => {
+            console.log("reCAPTCHA expired, solve again?");
           },
         }
       );
