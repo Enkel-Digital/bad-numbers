@@ -1,4 +1,4 @@
-<template>
+<template functional>
   <div id="loader" class="center">
     <b style="font-size: 1.4em">... LOADING ...</b>
     <br />
